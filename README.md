@@ -47,6 +47,7 @@ A modern, responsive portfolio website built with Angular 17, showcasing profess
 3. **Start the development server**
    ```bash
    npm start
+   npx ng serve
    ```
 
 4. **Open your browser**
