@@ -1,0 +1,83 @@
+<section class="skills">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Skills & Expertise</h2>
+    
+    <div class="skills-content">
+      <div class="skills-categories">
+        <div class="category-section" data-aos="fade-up">
+          <h3>Frontend Development</h3>
+          <div class="skills-grid">
+            <div class="skill-item" *ngFor="let skill of frontendSkills" data-aos="fade-up">
+              <div class="skill-header">
+                <i [class]="skill.icon"></i>
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-level">{{ skill.level }}%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-progress" [style.width.%]="skill.level">
+                  <div class="progress-shimmer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="category-section" data-aos="fade-up">
+          <h3>Backend Development</h3>
+          <div class="skills-grid">
+            <div class="skill-item" *ngFor="let skill of backendSkills" data-aos="fade-up">
+              <div class="skill-header">
+                <i [class]="skill.icon"></i>
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-level">{{ skill.level }}%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-progress" [style.width.%]="skill.level">
+                  <div class="progress-shimmer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="category-section" data-aos="fade-up">
+          <h3>Tools & Technologies</h3>
+          <div class="skills-grid">
+            <div class="skill-item" *ngFor="let skill of toolsSkills" data-aos="fade-up">
+              <div class="skill-header">
+                <i [class]="skill.icon"></i>
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-level">{{ skill.level }}%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-progress" [style.width.%]="skill.level">
+                  <div class="progress-shimmer"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="additional-skills" data-aos="fade-left">
+        <div class="interests-section">
+          <h3>Interests & Hobbies</h3>
+          <div class="interests-grid">
+            <div class="interest-item" *ngFor="let interest of interests">
+              <i [class]="interest.icon"></i>
+              <span>{{ interest.name }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="languages-section">
+          <h3>Languages</h3>
+          <div class="language-item" *ngFor="let lang of languages">
+            <span class="language-name">{{ lang.name }}</span>
+            <span class="language-level" [class]="lang.level">{{ lang.level }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

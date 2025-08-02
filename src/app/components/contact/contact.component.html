@@ -1,0 +1,119 @@
+<section class="contact">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Get In Touch</h2>
+    
+    <div class="contact-content">
+      <div class="contact-info" data-aos="fade-right">
+        <h3>Let's Connect</h3>
+        <p>I'm always interested in new opportunities and exciting projects. Feel free to reach out!</p>
+        
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Location</h4>
+              <p>Tikathali, Lalitpur, Nepal</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Email</h4>
+              <a href="mailto:subodhbhandari4&#64;gmail.com">subodhbhandari4&#64;gmail.com</a>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Social</h4>
+              <div class="social-links">
+                <a href="https://linkedin.com/in/subodh-bhandari/" target="_blank">
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/Subodh2055" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-form-container" data-aos="fade-left">
+        <form class="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              [(ngModel)]="formData.name" 
+              required
+              class="form-control"
+              [class.error]="submitted && !formData.name"
+            />
+            <span class="error-message" *ngIf="submitted && !formData.name">
+              Name is required
+            </span>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              [(ngModel)]="formData.email" 
+              required
+              class="form-control"
+              [class.error]="submitted && !formData.email"
+            />
+            <span class="error-message" *ngIf="submitted && !formData.email">
+              Valid email is required
+            </span>
+          </div>
+          
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input 
+              type="text" 
+              id="subject" 
+              name="subject" 
+              [(ngModel)]="formData.subject" 
+              class="form-control"
+            />
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea 
+              id="message" 
+              name="message" 
+              [(ngModel)]="formData.message" 
+              required
+              rows="5"
+              class="form-control"
+              [class.error]="submitted && !formData.message"
+            ></textarea>
+            <span class="error-message" *ngIf="submitted && !formData.message">
+              Message is required
+            </span>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+            <span *ngIf="!isSubmitting">Send Message</span>
+            <span *ngIf="isSubmitting">Sending...</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section> 
