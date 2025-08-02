@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "ng build --base-href https://subodhbhandari.com.np/ && npx angular-cli-ghpages --dir=dist/portfolio-angular"
   },
   "private": true,
   "dependencies": {
@@ -18,15 +19,16 @@
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.14.2",
     "@fortawesome/angular-fontawesome": "^0.14.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "angular-cli-ghpages": "^2.0.3",
     "aos": "^2.3.4",
-    "emailjs-com": "^3.2.0"
+    "emailjs-com": "^3.2.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.0.0",
@@ -41,4 +43,4 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.2.0"
   }
-} 
+}
