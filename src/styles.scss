@@ -102,6 +102,67 @@ ul {
   }
 }
 
+/* Toastr Custom Styles */
+.toast-container {
+  position: fixed !important;
+  top: 20px !important;
+  right: 20px !important;
+  z-index: 10000 !important;
+}
+
+.toast {
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+  margin-bottom: 10px !important;
+  overflow: hidden !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.toast-success {
+  border-left: 4px solid #00b09b !important;
+}
+
+.toast-error {
+  border-left: 4px solid #ff5f6d !important;
+}
+
+.toast-warning {
+  border-left: 4px solid #ffc107 !important;
+}
+
+.toast-info {
+  border-left: 4px solid #17a2b8 !important;
+}
+
+.toast-title {
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  color: var(--secondary-color) !important;
+}
+
+.toast-message {
+  font-size: 0.9rem !important;
+  color: var(--text-color) !important;
+  line-height: 1.4 !important;
+}
+
+.toast-close-button {
+  color: var(--text-light) !important;
+  font-size: 1.2rem !important;
+  opacity: 0.7 !important;
+}
+
+.toast-close-button:hover {
+  opacity: 1 !important;
+  color: var(--accent-color) !important;
+}
+
+.toast-progress {
+  background: var(--gradient-primary) !important;
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -190,6 +251,26 @@ ul {
   .btn {
     padding: 10px 25px;
     font-size: 0.85rem;
+  }
+  
+  /* Mobile toast adjustments */
+  .toast-container {
+    top: 10px !important;
+    right: 10px !important;
+    left: 10px !important;
+  }
+  
+  .toast {
+    margin-bottom: 8px !important;
+    border-radius: 8px !important;
+  }
+  
+  .toast-title {
+    font-size: 0.9rem !important;
+  }
+  
+  .toast-message {
+    font-size: 0.8rem !important;
   }
 }
 

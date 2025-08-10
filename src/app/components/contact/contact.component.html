@@ -48,20 +48,20 @@
       </div>
       
       <div class="contact-form-container" data-aos="fade-left">
-        <form class="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+        <form class="contact-form" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="name">Name *</label>
             <input 
               type="text" 
               id="name" 
-              name="name" 
-              [(ngModel)]="formData.name" 
-              required
+              formControlName="name"
               class="form-control"
-              [class.error]="submitted && !formData.name"
+              [class.error]="isFieldInvalid('name')"
+              [class.success]="isFieldValid('name')"
+              placeholder="Enter your name"
             />
-            <span class="error-message" *ngIf="submitted && !formData.name">
-              Name is required
+            <span class="error-message" *ngIf="getFieldError('name')">
+              {{ getFieldError('name') }}
             </span>
           </div>
           
@@ -70,14 +70,14 @@
             <input 
               type="email" 
               id="email" 
-              name="email" 
-              [(ngModel)]="formData.email" 
-              required
+              formControlName="email"
               class="form-control"
-              [class.error]="submitted && !formData.email"
+              [class.error]="isFieldInvalid('email')"
+              [class.success]="isFieldValid('email')"
+              placeholder="Enter your email"
             />
-            <span class="error-message" *ngIf="submitted && !formData.email">
-              Valid email is required
+            <span class="error-message" *ngIf="getFieldError('email')">
+              {{ getFieldError('email') }}
             </span>
           </div>
           
@@ -86,31 +86,42 @@
             <input 
               type="text" 
               id="subject" 
-              name="subject" 
-              [(ngModel)]="formData.subject" 
+              formControlName="subject"
               class="form-control"
+              [class.error]="isFieldInvalid('subject')"
+              [class.success]="isFieldValid('subject')"
+              placeholder="Enter subject (optional)"
             />
+            <span class="error-message" *ngIf="getFieldError('subject')">
+              {{ getFieldError('subject') }}
+            </span>
           </div>
           
           <div class="form-group">
             <label for="message">Message *</label>
             <textarea 
               id="message" 
-              name="message" 
-              [(ngModel)]="formData.message" 
-              required
+              formControlName="message"
               rows="5"
               class="form-control"
-              [class.error]="submitted && !formData.message"
+              [class.error]="isFieldInvalid('message')"
+              [class.success]="isFieldValid('message')"
+              placeholder="Enter your message"
             ></textarea>
-            <span class="error-message" *ngIf="submitted && !formData.message">
-              Message is required
+            <span class="error-message" *ngIf="getFieldError('message')">
+              {{ getFieldError('message') }}
             </span>
           </div>
           
-          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-            <span *ngIf="!isSubmitting">Send Message</span>
-            <span *ngIf="isSubmitting">Sending...</span>
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || contactForm.invalid">
+            <span *ngIf="!isSubmitting">
+              <i class="fas fa-paper-plane"></i>
+              Send Message
+            </span>
+            <span *ngIf="isSubmitting">
+              <i class="fas fa-spinner fa-spin"></i>
+              Sending...
+            </span>
           </button>
         </form>
       </div>

@@ -1,120 +1,130 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-declare var emailjs: any;
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { EmailService } from '../../services/email.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
 })
 export class ContactComponent implements OnInit {
-  formData = {
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  };
-  
-  submitted = false;
+  contactForm!: FormGroup;
   isSubmitting = false;
 
+  constructor(
+    private fb: FormBuilder,
+    private emailService: EmailService,
+    private notificationService: NotificationService
+  ) {}
+
   ngOnInit() {
-    // Initialize EmailJS
-    if (typeof emailjs !== 'undefined') {
-      emailjs.init('P7vsLl1LMUjGwlFCD');
-    }
+    this.initForm();
+  }
+
+  private initForm() {
+    this.contactForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email]],
+      subject: ['', [Validators.maxLength(100)]],
+      message: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(1000)]]
+    });
   }
 
   onSubmit() {
-    this.submitted = true;
-    
-    if (!this.formData.name || !this.formData.email || !this.formData.message) {
+    if (this.contactForm.invalid) {
+      this.markFormGroupTouched();
+      this.notificationService.showError('Please fill in all required fields correctly.', 'Validation Error');
       return;
     }
-    
-    // Email validation
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(this.formData.email)) {
-      return;
-    }
-    
+
     this.isSubmitting = true;
-    
-    // Prepare email data
-    const emailData = {
-      to_email: 'subodhbhandari4&#64;gmail.com',
-      from_name: this.formData.name,
-      from_email: this.formData.email,
-      subject: this.formData.subject || 'Portfolio Contact Form',
-      message: this.formData.message
-    };
-    
-    // Send email using EmailJS
-    if (typeof emailjs !== 'undefined') {
-      emailjs.send('service_wvczn3l', 'template_7tf5rwn', emailData)
-        .then((response: any) => {
-          this.showNotification('Email sent successfully!', 'success');
-          this.resetForm();
-        })
-        .catch((error: any) => {
-          this.showNotification('Failed to send email. Please try again.', 'error');
-          console.error('EmailJS Error:', error);
-        })
-        .finally(() => {
-          this.isSubmitting = false;
-        });
-    } else {
-      // Fallback for when EmailJS is not available
-      this.showNotification('Email service not available. Please contact directly.', 'error');
+    const formData = this.contactForm.value;
+
+    // Additional email validation
+    if (!this.emailService.validateEmail(formData.email)) {
+      this.notificationService.showError('Please enter a valid email address.', 'Invalid Email');
       this.isSubmitting = false;
+      return;
     }
+
+    // Check if EmailJS is available
+    if (!this.emailService.isEmailJSAvailable()) {
+      this.notificationService.showWarning('Email service not available. Please contact me directly via email.', 'Service Unavailable');
+      this.isSubmitting = false;
+      return;
+    }
+
+    // Send email using the service
+    this.emailService.sendEmail(formData).subscribe({
+      next: (response) => {
+        this.notificationService.showSuccess('Thank you! Your message has been sent successfully.', 'Success!');
+        this.resetForm();
+      },
+      error: (error) => {
+        console.error('Email sending error:', error);
+        this.notificationService.showError(error.message || 'Failed to send email. Please try again or contact me directly.', 'Error');
+      },
+      complete: () => {
+        this.isSubmitting = false;
+      }
+    });
   }
 
   private resetForm() {
-    this.formData = {
-      name: '',
-      email: '',
-      subject: '',
-      message: ''
-    };
-    this.submitted = false;
+    this.contactForm.reset();
+    this.contactForm.markAsUntouched();
   }
 
-  private showNotification(message: string, type: 'success' | 'error') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      border-radius: 8px;
-      color: white;
-      font-weight: 600;
-      z-index: 10000;
-      animation: slideIn 0.3s ease-out;
-      ${type === 'success' 
-        ? 'background: linear-gradient(135deg, #00b09b, #96c93d);' 
-        : 'background: linear-gradient(135deg, #ff5f6d, #ffc371);'
+  private markFormGroupTouched() {
+    Object.keys(this.contactForm.controls).forEach(key => {
+      const control = this.contactForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
+  // Helper methods for template
+  getFieldError(fieldName: string): string {
+    const field = this.contactForm.get(fieldName);
+    if (field?.errors && field.touched) {
+      if (field.errors['required']) {
+        return `${this.getFieldLabel(fieldName)} is required`;
       }
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Remove notification after 3 seconds
-    setTimeout(() => {
-      notification.style.animation = 'slideOut 0.3s ease-out';
-      setTimeout(() => {
-        if (document.body.contains(notification)) {
-          document.body.removeChild(notification);
-        }
-      }, 300);
-    }, 3000);
+      if (field.errors['email']) {
+        return 'Please enter a valid email address';
+      }
+      if (field.errors['minlength']) {
+        const requiredLength = field.errors['minlength'].requiredLength;
+        return `${this.getFieldLabel(fieldName)} must be at least ${requiredLength} characters`;
+      }
+      if (field.errors['maxlength']) {
+        const requiredLength = field.errors['maxlength'].requiredLength;
+        return `${this.getFieldLabel(fieldName)} must not exceed ${requiredLength} characters`;
+      }
+    }
+    return '';
+  }
+
+  private getFieldLabel(fieldName: string): string {
+    const labels: { [key: string]: string } = {
+      name: 'Name',
+      email: 'Email',
+      subject: 'Subject',
+      message: 'Message'
+    };
+    return labels[fieldName] || fieldName;
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.contactForm.get(fieldName);
+    return !!(field?.invalid && field.touched);
+  }
+
+  isFieldValid(fieldName: string): boolean {
+    const field = this.contactForm.get(fieldName);
+    return !!(field?.valid && field.touched);
   }
 } 

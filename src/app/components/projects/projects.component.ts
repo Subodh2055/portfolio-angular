@@ -17,7 +17,7 @@ interface Project {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './projects.component.html',
-
+  styleUrls: ['./projects.component.css']
 })
 export class ProjectsComponent {
   projects: Project[] = [
