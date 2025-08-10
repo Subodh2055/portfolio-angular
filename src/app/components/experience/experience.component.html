@@ -1,0 +1,30 @@
+<section class="experience">
+  <div class="container">
+    <h2 class="section-title" data-aos="fade-up">Professional Experience</h2>
+    
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let exp of experiences; let i = index" 
+           [attr.data-aos]="i % 2 === 0 ? 'fade-right' : 'fade-left'"
+           [attr.data-aos-delay]="i * 100">
+        <div class="timeline-marker">
+          <div class="marker-icon">
+            <i [class]="exp.icon"></i>
+          </div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <h3>{{ exp.title }}</h3>
+            <h4>{{ exp.company }}</h4>
+            <span class="period">{{ exp.period }}</span>
+          </div>
+          <ul class="timeline-description">
+            <li *ngFor="let item of exp.description">{{ item }}</li>
+          </ul>
+          <div class="technologies">
+            <span *ngFor="let tech of exp.technologies" class="tech-tag">{{ tech }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
